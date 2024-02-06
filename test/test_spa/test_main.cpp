@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SpaIot.h>
 #include <unity.h>
-#include <unity-config.h>
+#include <unity_config.h>
 
 using namespace SpaIot;
 
@@ -34,9 +34,9 @@ void test_function_bubble() {
     delay(2000);
     spa.setBubble(false);
     TEST_ASSERT_FALSE(spa.isBubbleOn());
-    }
+}
 
-    void test_function_filter() {
+void test_function_filter() {
     spa.setFilter(true);
     delay(2000);
     TEST_ASSERT_TRUE(spa.isFilterOn());
