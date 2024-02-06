@@ -103,7 +103,7 @@ void executeCommand(String command) {
 
     // HEATER
     spa.setHeater(true);
-    Serial.println("SPA FILTER ON");
+    Serial.println("SPA HEATER ON");
     delay(5000);
     spa.setHeater(false);
     Serial.println("SPA HEATER OFF");
@@ -134,7 +134,6 @@ void setup() {
 
 void loop() {
   // ENTER COMMAND
-  // Serial.println("ENTER COMMAND");
   while(Serial.available()) {
     char inChar = (char)Serial.read();
     if(inChar != '\r') {
