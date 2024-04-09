@@ -9,8 +9,8 @@ using namespace SpaIot;
 
 /// VARIABLES
 // WIFI
-const char* ssid = "Yamaworld";
-const char* password = "123457ab";
+const char* ssid = "YOUR_NETWORK";
+const char* password = "YOUR_PASSWORD";
 
 // MQTT
 const char* mqttServer = "test.mosquitto.org";
