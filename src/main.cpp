@@ -11,8 +11,13 @@ ControlPanel spa ("SPAIOT32SSP"); // SPAIOT32SSP
 String command;
 
 // FUNCTIONS
+
+/*
+  La fonction executeCommand sera appelée en boucle dans le void loop(). Nous lui transmettrons une variable string
+  qui contiendra la commande à exécuter. En fonction de la valeur, nous exécuterons l'une des commandes ci-dessous.
+*/
 void executeCommand(String command) {
-  if(command.startsWith("/help")) { // SHOW ALL COMMANDS
+  if(command.startsWith("/help")) { // Affiche toutes les commandes disponibles
     Serial.println("HELP");
     Serial.println("/help : show this help");
     Serial.println("/turnOn : Turn on the SPA");
@@ -27,62 +32,62 @@ void executeCommand(String command) {
     Serial.println("");
   }
 
-  else if(command.startsWith("/turnOn")) {
+  else if(command.startsWith("/turnOn")) { // Allume le SPA
     spa.setPower(true); // Turn on the spa
     Serial.println("SPA POWER ON");
     Serial.println("");
   }
 
-  else if(command.startsWith("/turnOff")) {
+  else if(command.startsWith("/turnOff")) { // Eteint le SPA
     spa.setPower(false); // Turn off the spa
     Serial.println("SPA POWER OFF");
     Serial.println("");
   }
 
-  else if(command.startsWith("/enableBubble")) {
+  else if(command.startsWith("/enableBubble")) { // Active les bulles
     spa.setBubble(true); // Enable the bubbles
     Serial.println("SPA BUBBLE ON");
     Serial.println("");
   }
 
-  else if(command.startsWith("/disableBubble")) {
+  else if(command.startsWith("/disableBubble")) { // Désactive les bulles
     spa.setBubble(false); // Disable the bubbles
     Serial.println("SPA BUBBLE OFF");
     Serial.println("");
   }
 
-  else if(command.startsWith("/enableFilter")) {
+  else if(command.startsWith("/enableFilter")) { // Active le filtre
     spa.setFilter(true);
     Serial.println("SPA FILTER ON");
     Serial.println("");
   }
 
-  else if(command.startsWith("/disableFilter")) {
+  else if(command.startsWith("/disableFilter")) { // Désactive le filtre
     spa.setFilter(false);
     Serial.println("SPA FILTER OFF");
     Serial.println("");
   }
 
-  else if(command.startsWith("/enableHeater")) {
+  else if(command.startsWith("/enableHeater")) { // Active le chauffage
     spa.setHeater(true);
     Serial.println("SPA HEATER ON");
     Serial.println("");
   }
 
-  else if(command.startsWith("/disableHeater")) {
+  else if(command.startsWith("/disableHeater")) { // Désactive le chauffage
     spa.setHeater(false);
     Serial.println("SPA HEATER OFF");
     Serial.println("");
   }
 
-  else if(command.startsWith("/showWaterTemp")) {
+  else if(command.startsWith("/showWaterTemp")) { // Affiche la température de l'eau
     Serial.print("WATER TEMPERATURE : ");
     Serial.print(spa.waterTemp());
     Serial.println(" C");
     Serial.println("");
   }
 
-  else if(command.startsWith("/test")) {
+  else if(command.startsWith("/test")) { // Test toutes les commandes
     spa.setPower(true);
     Serial.println("SPA POWER ON");
     delay(2000);
@@ -123,7 +128,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println("SPA INTEX IOT BY BRYAN PIGNEROL");
 
-  spa.begin();
+  spa.begin(); // Démarre le SPA
   while(spa.isOpen() == false) {
     Serial.println("SPA NOT OPENED");
     delay(2000);
