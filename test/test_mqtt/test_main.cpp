@@ -29,7 +29,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 /// FONCTIONS
-void connect_wifi() {
+void connect_wifi() { // Connexion au réseau WIFI
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   while(WiFi.status() != WL_CONNECTED) {
@@ -37,7 +37,7 @@ void connect_wifi() {
   }
 }
 
-void connect_mqtt() {
+void connect_mqtt() { // Connexion au serveur MQTT
   client.setServer(mqttServer, mqttPort);
   while(!client.connected()) {
     String clientId = "esp32-client-";
@@ -48,7 +48,7 @@ void connect_mqtt() {
   }
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
+void callback(char* topic, byte* payload, unsigned int length) { // Fonction de callback
   messageTemp = "";
   for (int i = 0; i < length; i++) {
     messageTemp += (char)payload[i];
@@ -65,13 +65,13 @@ void tearDown() {
 
 }
 
-void test_function_mqttConnected() {
+void test_function_mqttConnected() { // Test de connexion au serveur MQTT
   TEST_ASSERT_TRUE(client.connected());
   delay(1000);
 }
 
-void test_function_powerOnMqtt() {
-  callback(topicPower, (byte*)"turnOn", 6);
+void test_function_powerOnMqtt() { // Test d'allumage du spa
+  client.loop(); // Boucle de lecture des messages sur le broker MQTT
   if(messageTemp == "turnOn") {
     spa.setPower(true);
   }
@@ -79,8 +79,8 @@ void test_function_powerOnMqtt() {
   delay(1000);
 }
 
-void test_function_bubbleOnMqtt() {
-  callback(topicBubble, (byte*)"enableBubble", 12);
+void test_function_bubbleOnMqtt() { // Test de l'activation des bulles
+  client.loop();
   if(messageTemp == "enableBubble") {
     spa.setBubble(true);
   }
@@ -88,8 +88,8 @@ void test_function_bubbleOnMqtt() {
   delay(1000);
 }
 
-void test_function_bubbleOffMqtt() {
-  callback(topicBubble, (byte*)"disableBubble", 13);
+void test_function_bubbleOffMqtt() { // Test de l'extinction des bulles
+  client.loop();
   if(messageTemp == "disableBubble") {
     spa.setBubble(false);
   }
@@ -97,8 +97,8 @@ void test_function_bubbleOffMqtt() {
   delay(1000);
 }
 
-void test_function_filterOnMqtt() {
-  callback(topicFilter, (byte*)"enableFilter", 12);
+void test_function_filterOnMqtt() { // Test de l'activation du filtre
+  client.loop();
   if(messageTemp == "enableFilter") {
     spa.setFilter(true);
   }
@@ -106,8 +106,8 @@ void test_function_filterOnMqtt() {
   delay(1000);
 }
 
-void test_function_filterOffMqtt() {
-  callback(topicFilter, (byte*)"disableFilter", 13);
+void test_function_filterOffMqtt() { // Test de l'extinction du filtre
+  client.loop();
   if(messageTemp == "disableFilter") {
     spa.setFilter(false);
   }
@@ -115,8 +115,8 @@ void test_function_filterOffMqtt() {
   delay(1000);
 }
 
-void test_function_heaterOnMqtt() {
-  callback(topicHeater, (byte*)"enableHeater", 12);
+void test_function_heaterOnMqtt() { // Test de l'activation du chauffage
+  client.loop();
   if(messageTemp == "enableHeater") {
     spa.setHeater(true);
   }
@@ -124,8 +124,8 @@ void test_function_heaterOnMqtt() {
   delay(1000);
 }
 
-void test_function_heaterOffMqtt() {
-  callback(topicHeater, (byte*)"disableHeater", 13);
+void test_function_heaterOffMqtt() { // Test de l'extinction du chauffage
+  client.loop();
   if(messageTemp == "disableHeater") {
     spa.setHeater(false);
   }
@@ -133,8 +133,8 @@ void test_function_heaterOffMqtt() {
   delay(1000);
 }
 
-void test_function_powerOffMqtt() {
-  callback(topicPower, (byte*)"turnOff", 7);
+void test_function_powerOffMqtt() { // Test d'extinction du spa
+  client.loop();
   if(messageTemp == "turnOff") {
     spa.setPower(false);
   }
@@ -186,8 +186,8 @@ void setup() {
   delay(1000);
   connect_wifi();
   connect_mqtt();
-  client.setCallback(callback);
-  client.subscribe(topicPower);
+  client.setCallback(callback); // Définition de la fonction de callback
+  client.subscribe(topicPower); // Abonnement aux topics
   client.subscribe(topicBubble);
   client.subscribe(topicFilter); 
   client.subscribe(topicHeater);
